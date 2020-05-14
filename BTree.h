@@ -3,8 +3,8 @@
 #include <stdio.h>
 #include<stdlib.h>
 typedef struct btree BTree;
+
 BTree *btree_createfrom(int info, BTree *sae, BTree *sad);
-BTree *btree_create(void);
 BTree *btree_insert(BTree *t, int info);
 int btree_height(BTree *t);
 int btree_numleaves(BTree *t);

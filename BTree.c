@@ -12,10 +12,6 @@ static int btree_isempty(BTree *t)
     else
         return 0;
 }
-BTree *btree_create(void)
-{
-    return NULL;
-}
 BTree *btree_createfrom(int info, BTree *sae, BTree *sad)
 {
     BTree *p = (BTree *)malloc(sizeof(BTree));
@@ -38,33 +34,20 @@ BTree *btree_insert(BTree *t, int info)
         t->sad = btree_insert(t->sad, info);
     return t;
 }
-static int height_aux(BTree *t)
-{
-    if (t)
-    {
-        int left = 1 + height_aux(t->sae);
-        int right = 1 + height_aux(t->sad);
-        if (left > right)
-            return left;
-        else
-            return right;
-    }
-    else
-        return 0;
-}
+
 int btree_height(BTree *t)
 {
     if (t)
     {
-        int left = height_aux(t->sae);
-        int right = height_aux(t->sad);
+        int left = btree_height(t->sae);
+        int right = btree_height(t->sad);
         if (left > right)
-            return left;
+            return 1 + left;
         else
-            return right;
+            return 1 + right;
     }
     else
-        return 0;
+        return -1;
 }
 
 int btree_numleaves(BTree *t)
@@ -94,18 +77,18 @@ int btree_issearchtree(BTree *t)
         int right = 1;
         if (t->sad)
         {
-            if (t->sad->info <= t->info)
+            if (t->sad->info >= t->info)
                 right = btree_issearchtree(t->sad);
             else
                 return 0;
         }
-        if (left < right)
+        if (left <= right)
             return left;
         else
             return right;
     }
     else
-        return 0;
+        return 1;
 }
 int btree_isavltree(BTree *t)
 {
@@ -117,16 +100,16 @@ int btree_isavltree(BTree *t)
         {
             int r = btree_isavltree(t->sad);
             int l = btree_isavltree(t->sae);
-            if (r >= l)
-                return l;
-            else
+            if (r <= l)
                 return r;
+            else
+                return l;
         }
         else
             return 0;
     }
     else
-        return 0;
+        return 1;
 }
 BTree *btree_destroy(BTree *t)
 {
