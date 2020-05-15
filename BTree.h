@@ -2,6 +2,7 @@
 #define BTREE_H
 #include <stdio.h>
 #include<stdlib.h>
+#include <math.h>
 typedef struct btree BTree;
 
 BTree *btree_createfrom(int info, BTree *sae, BTree *sad);

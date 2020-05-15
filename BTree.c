@@ -5,6 +5,46 @@ struct btree
     struct btree *sad;
     struct btree *sae;
 };
+typedef struct fila
+{
+    struct btree *el;
+    struct fila *next;
+} Fila;
+static Fila *fila_add(Fila *f, BTree *t)
+{
+    if (f)
+    {
+        Fila *n = (Fila *)malloc(sizeof(Fila));
+        n->el = t;
+        n->next = NULL;
+        f->next = n;
+    }
+    else
+    {
+        f = (Fila *)malloc(sizeof(Fila));
+        f->el = t;
+        f->next = NULL;
+    }
+    return f;
+}
+static Fila *fila_remove(Fila *f)
+{
+    if (f)
+    {
+        return f->next;
+    }
+    else
+        return NULL;
+}
+static BTree *fila_veprimeiro(const Fila *f)
+{
+    if (f)
+    {
+        return f->el;
+    }
+    else
+        return NULL;
+}
 static int btree_isempty(BTree *t)
 {
     if (!t)
@@ -30,7 +70,7 @@ BTree *btree_insert(BTree *t, int info)
     }
     else if (info < t->info)
         t->sae = btree_insert(t->sae, info);
-    else
+    else if(info > t->info)
         t->sad = btree_insert(t->sad, info);
     return t;
 }
@@ -69,7 +109,7 @@ int btree_issearchtree(BTree *t)
         int left = 1;
         if (t->sae)
         {
-            if (t->sae->info <= t->info)
+            if (t->sae->info < t->info)
                 left = btree_issearchtree(t->sae);
             else
                 return 0;
@@ -77,7 +117,7 @@ int btree_issearchtree(BTree *t)
         int right = 1;
         if (t->sad)
         {
-            if (t->sad->info >= t->info)
+            if (t->sad->info > t->info)
                 right = btree_issearchtree(t->sad);
             else
                 return 0;
@@ -113,7 +153,7 @@ int btree_isavltree(BTree *t)
 }
 BTree *btree_destroy(BTree *t)
 {
-    if (!btree_isempty(t))
+    if (t)
     {
         btree_destroy(t->sae);
         btree_destroy(t->sad);
@@ -129,11 +169,48 @@ static void print_aux(BTree *t, int spc)
             printf(" ");
         printf("%d", t->info);
         printf("\n");
+        for (int i = 0; i < spc / 2; i++)
+            printf(" ");
+        if (t->sae)
+            printf("%d", t->sae->info);
+        for (int i = 0; i < spc; i++)
+            printf(" ");
+        if (t->sad)
+            printf("%d", t->sad->info);
+        printf("\n");
+
         print_aux(t->sae, spc / 2);
-        print_aux(t->sad, spc / 2);
+        print_aux(t->sad, spc);
     }
 }
 void btree_print(BTree *t)
 {
-    print_aux(t, btree_height(t));
+    int height = btree_height(t);
+    Fila *f = NULL;
+    if (t)
+        f = fila_add(f, t);
+    while (f)
+    {
+        Fila *itf = f;
+        Fila *f2 = NULL;
+        while (f)
+        {
+            BTree *it = fila_veprimeiro(f);
+            for (int i = 0; i < height; i++)
+                printf(" ");
+            printf("%d", it->info);
+            if (it->sae)
+                f2 = fila_add(f2, it->sae);
+            if (it->sad)
+                f2 = fila_add(f2, it->sad);
+            f = fila_remove(f);
+        }
+        height = ceil((float)height / 2);
+        printf("\n");
+        while (f2)
+        {
+            f = fila_add(f, fila_veprimeiro(f2));
+            f2 = fila_remove(f2);
+        }
+    }
 }
