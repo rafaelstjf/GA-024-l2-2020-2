@@ -7,12 +7,24 @@ void btree_test();
 int main()
 {
     AVLTree* a = NULL;
-    avltree_insert(a, 8);
-    avltree_insert(a, 10);
-    avltree_insert(a, 2);
-    avltree_insert(a, 6);
-    avltree_insert(a, 5);
-    avltree_insert(a, 4);
+    /*
+    avltree_insert(&a, 8);
+    avltree_insert(&a, 10);
+    avltree_insert(&a, 4);
+    avltree_insert(&a, 2);
+    avltree_insert(&a, 6);
+    avltree_insert(&a, 5);
+    */
+    avltree_insert(&a, 5);
+    avltree_insert(&a, 2);
+    avltree_insert(&a, 7);
+    avltree_insert(&a, 1);
+    avltree_insert(&a, 4);
+    avltree_insert(&a, 6);
+    avltree_insert(&a, 9);
+    avltree_insert(&a, 3);
+    avltree_insert(&a, 16);
+    avltree_insert(&a, 15);
     avltree_print(a);
 
     return 0;
