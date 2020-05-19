@@ -11,8 +11,8 @@ static int calc_fb(AVLTree *t)
 {
     if (t)
     {
-        int right = 0;
-        int left = 0;
+        int right = -1;
+        int left = -1;
         if (t->sad)
             right = t->sad->height;
         if (t->sae)
@@ -58,20 +58,20 @@ static void r_rotation(AVLTree **t)
     //a sad da raiz vira o pivo
     //atualiza a altura
     (*t)->sad = t1;
-    int r_h = 0;
-    int l_h = 0;
+    int r_h = -1;
+    int l_h = -1;
     if (t1->sad)
         r_h = t1->sad->height;
     if (t1->sae)
         l_h = t1->sae->height;
-    t1->height = 1+ ((r_h > l_h) ? r_h : l_h);
-    r_h = 0;
-    l_h = 0;
+    t1->height = 1 + ((r_h > l_h) ? r_h : l_h);
+    r_h = -1;
+    l_h = -1;
     if ((*t)->sad)
         r_h = (*t)->sad->height;
     if ((*t)->sae)
         l_h = (*t)->sae->height;
-    (*t)->height = 1 + ((r_h > l_h) ? r_h : l_h); 
+    (*t)->height = 1 + ((r_h > l_h) ? r_h : l_h);
 }
 static void l_rotation(AVLTree **t)
 {
@@ -90,20 +90,20 @@ static void l_rotation(AVLTree **t)
     //a sad da raiz vira o pivo
     (*t)->sae = t1;
     //atualiza a altura
-    int r_h = 0;
-    int l_h = 0;
+    int r_h = -1;
+    int l_h = -1;
     if (t1->sad)
         r_h = t1->sad->height;
     if (t1->sae)
         l_h = t1->sae->height;
-    t1->height = 1 + ((r_h > l_h) ? r_h : l_h); 
-    r_h = 0;
-    l_h = 0;
+    t1->height = 1 + ((r_h > l_h) ? r_h : l_h);
+    r_h = -1;
+    l_h = -1;
     if ((*t)->sad)
         r_h = (*t)->sad->height;
     if ((*t)->sae)
         l_h = (*t)->sae->height;
-    (*t)->height = 1+ ((r_h > l_h) ? r_h : l_h);
+    (*t)->height = 1 + ((r_h > l_h) ? r_h : l_h);
 }
 int avltree_insert(AVLTree **t, int element)
 {
@@ -118,8 +118,8 @@ int avltree_insert(AVLTree **t, int element)
             if (!avltree_insert(&((*t)->sad), element))
                 return 0;
 
-        int h_l = 0;
-        int h_r = 0;
+        int h_l = -1;
+        int h_r = -1;
         if ((*t)->sae)
             h_l = (*t)->sae->height;
         if ((*t)->sad)
@@ -152,7 +152,6 @@ int avltree_insert(AVLTree **t, int element)
                 {
                     //left-left case
                     printf("left-left case on %d\n", (*t)->info);
-                    avltree_print(*t);
                     r_rotation(t);
                 }
                 else
