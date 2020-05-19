@@ -184,8 +184,13 @@ void avltree_print(AVLTree *t)
         printf("%d", t->info);
         if (t->sae)
             printf(" sae: %d", t->sae->info);
+        else
+            printf(" sae: -");
         if (t->sad)
             printf(" sad: %d", t->sad->info);
+
+        else
+            printf(" sad: -");
         printf("\n");
         avltree_print(t->sae);
         avltree_print(t->sad);
