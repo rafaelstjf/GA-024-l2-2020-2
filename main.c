@@ -3,18 +3,25 @@
 #include <math.h>
 #include "BTree.h"
 #include "AVLTree.h"
+#include "TrieTree.h"
 void btree_test();
+void avltree_test();
 int main()
 {
-    AVLTree* a = NULL;
-    /*
-    avltree_insert(&a, 8);
-    avltree_insert(&a, 10);
-    avltree_insert(&a, 4);
-    avltree_insert(&a, 2);
-    avltree_insert(&a, 6);
-    avltree_insert(&a, 5);
-    */
+    /*TrieTree* t = NULL;
+    trie_insert(&t, "astolfo");
+    trie_insert(&t, "zatchbell");
+    trie_insert(&t, "alonso");
+    trie_insert(&t, "beckham");
+    trie_insert(&t, "barathrum");
+
+    trie_print(t);*/
+    avltree_test();
+    return 0;
+}
+void avltree_test()
+{
+    AVLTree *a = NULL;
     avltree_insert(&a, 5);
     avltree_insert(&a, 2);
     avltree_insert(&a, 7);
@@ -24,10 +31,11 @@ int main()
     avltree_insert(&a, 9);
     avltree_insert(&a, 3);
     avltree_insert(&a, 16);
-    avltree_insert(&a, 15);
+    //Savltree_insert(&a, 15);
     avltree_print(a);
-
-    return 0;
+    printf("------------\n");
+    avltree_remove(&a, 7);
+    avltree_print(a);
 }
 void btree_test()
 {

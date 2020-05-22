@@ -6,6 +6,7 @@ typedef struct avltree AVLTree;
 
 //functions
 int avltree_insert(AVLTree** t, int element);
+int avltree_remove(AVLTree** t, int element);
 void avltree_print(AVLTree* t);
 int avltree_height(AVLTree* t);
 #endif

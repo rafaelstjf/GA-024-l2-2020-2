@@ -105,19 +105,10 @@ static void l_rotation(AVLTree **t)
         l_h = (*t)->sae->height;
     (*t)->height = 1 + ((r_h > l_h) ? r_h : l_h);
 }
-int avltree_insert(AVLTree **t, int element)
+static int balance(AVLTree **t)
 {
     if (*t)
     {
-        if ((*t)->info > element)
-        {
-            if (!avltree_insert(&((*t)->sae), element))
-                return 0;
-        }
-        else if ((*t)->info < element)
-            if (!avltree_insert(&((*t)->sad), element))
-                return 0;
-
         int h_l = -1;
         int h_r = -1;
         if ((*t)->sae)
@@ -163,7 +154,22 @@ int avltree_insert(AVLTree **t, int element)
                 }
             }
         }
-        return 1;
+    }
+    return 1;
+}
+int avltree_insert(AVLTree **t, int element)
+{
+    if (*t)
+    {
+        if ((*t)->info > element)
+        {
+            if (!avltree_insert(&((*t)->sae), element))
+                return 0;
+        }
+        else if ((*t)->info < element)
+            if (!avltree_insert(&((*t)->sad), element))
+                return 0;
+        return balance(t);
     }
     else
     {
@@ -176,6 +182,61 @@ int avltree_insert(AVLTree **t, int element)
         (*t)->height = 0;
         return 1;
     }
+}
+int avltree_remove(AVLTree **t, int element)
+{
+    if (*t)
+    {
+        if ((*t)->info > element)
+        {
+            if (!avltree_remove(&(*t)->sae, element))
+                return 0;
+        }
+        else if ((*t)->info < element)
+        {
+            if (!avltree_remove(&(*t)->sad, element))
+                return 0;
+        }
+        else if ((*t)->info == element)
+        {
+            if (!(*t)->sae && !(*t)->sad)
+            {
+                free(t);
+                *t = NULL;
+            }
+            else if (!(*t)->sad)
+            {
+                AVLTree *temp = (*t)->sae;
+                (*t)->info = (*t)->sae->info;
+                (*t)->sad = (*t)->sae->sad;
+                (*t)->sae = (*t)->sae->sae;
+                free(temp);
+            }
+            else if (!(*t)->sae)
+            {
+                AVLTree *temp = (*t)->sad;
+                (*t)->info = (*t)->sad->info;
+                (*t)->sae = (*t)->sad->sae;
+                (*t)->sad = (*t)->sad->sad;
+                free(temp);
+            }
+            else
+            {
+                AVLTree **it = &(*t)->sae;
+                while ((*it)->sad)
+                {
+                    it = &(*it)->sad;
+                }
+                (*t)->info = (*it)->info;
+                (*it)->info = element;
+                if (!avltree_remove(it, element))
+                    return 0;
+            }
+        }
+        return balance(t);
+    }
+    else
+        return 0;
 }
 void avltree_print(AVLTree *t)
 {
