@@ -53,11 +53,18 @@ Registry *hash_put(Hash tab, char *nome, int mat, float cr)
     else
     {
         if (ant)
+        {
             ant->prox = it;
-        it = (Registry *)malloc(sizeof(Registry));
-        strcpy(it->nome, nome);
-        it->matricula = mat;
-        it->cr = cr;
+            it = (Registry *)malloc(sizeof(Registry));
+            strcpy(it->nome, nome);
+            it->matricula = mat;
+            it->cr = cr;
+        }else{
+            tab[index] = (Registry *)malloc(sizeof(Registry));
+            strcpy(tab[index]->nome, nome);
+            tab[index]->matricula = mat;
+            tab[index]->cr = cr;
+        }
     }
     return tab[index];
 }
@@ -98,7 +105,7 @@ int hash_print(Hash tab)
         while (it)
         {
             printf("Indice: %d\n", i);
-            printf("Nome: %s, Matricula: %d, Cr: $0.2f\n", tab[i]->nome, tab[i]->matricula, tab[i]->cr);
+            printf("Nome: %s, Matricula: %d, Cr: %0.2f\n", tab[i]->nome, tab[i]->matricula, tab[i]->cr);
             it = it->prox;
         }
     }

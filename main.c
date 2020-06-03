@@ -20,7 +20,7 @@ void hash_test(){
     for(unsigned int i = 0; i < N; i++){
         h[i] = NULL;
     }
-    h[hash("cleiton")] = hash_put(h, "cleiton", 20, 0.1);
+    hash_put(h, "cleiton", 20, 0.1);
     Registry* r = hash_get(h, "cleiton");
     if(r) printf("encontrou o cleitinho!\n");
     hash_print(h);
